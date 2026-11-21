@@ -319,9 +319,8 @@ html.js .gallery>figure.in img{clip-path:inset(0)}
     </div>
 
     <figure class="hero-figure">
-      <div class="orbit" id="orbit" aria-label="Animated orbit of project photos around a planet: GHOST rover, CanSat 2026, six-motor carrier PCB, SwarmStore, quadruped leg and CanSat ground station.">
-        <div class="ring r1"></div><div class="ring r2"></div>
-        <div class="planet"><i></i></div>
+      <div class="orbit" id="orbit" aria-label="Animated carousel of project photos revolving in a ring: GHOST rover, CanSat 2026, six-motor carrier PCB, SwarmStore, quadruped leg and CanSat ground station.">
+        <div class="ring r1"></div>
         <a class="sat" href="#rover-pcb" style="--pos:50% 60%"><img src="assets/img/rover-side.webp" alt="GHOST rover"><span>GHOST rover</span></a>
         <a class="sat" href="#cansat" style="--pos:50% 45%"><img src="assets/img/cansat-launchpad.webp" alt="CanSat 2026"><span>CanSat 2026</span></a>
         <a class="sat" href="#rover-pcb" style="--pos:40% 30%"><img src="assets/img/rover-pcb-top.webp" alt="6-motor carrier PCB"><span>6-motor carrier PCB</span></a>
@@ -917,7 +916,7 @@ html.js .gallery>figure.in img{clip-path:inset(0)}
   if(orbit){
     var sats=[].slice.call(orbit.querySelectorAll('.sat')), N=sats.length, t=0, last=0, paused=false;
     function place(){
-      var W=orbit.clientWidth, H=orbit.clientHeight, cx=W/2, cy=H/2, rx=W*0.34, ry=H*0.27, tilt=-0.18;
+      var W=orbit.clientWidth, H=orbit.clientHeight, cx=W/2, cy=H/2, rx=W*0.34, ry=H*0.22, tilt=-0.18;
       sats.forEach(function(el,i){
         var a=t+i*(Math.PI*2/N), c=Math.cos(a), sn=Math.sin(a);
         var x=cx+rx*c, y=cy+ry*sn + c*rx*tilt;
