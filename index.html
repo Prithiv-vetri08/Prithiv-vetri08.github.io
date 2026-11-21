@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prithiv Ramvasan Vetri Selvan — Mechatronics Portfolio</title>
+<meta name="description" content="Prithiv Ramvasan Vetri Selvan, mechatronics engineering student in Berlin. Rover electronics, CanSat GNC and ground stations, multi-robot embedded systems, RF links and backend.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500&family=Inter+Tight:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<script>if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('js');</script>
+<style>
+/* Layout: night-sky hero with a descent trajectory, a mission-log style project index,
+   one spread per flagship project (write-up + spec sheet), smaller project cards,
+   then experience, toolkit, education, contact. Palette: Mars regolith + deep space. */
+:root{
+  --paper:#f5f1ec; --panel:#fbf9f6; --ink:#1c1714; --muted:#6b5f57; --line:#e0d6cc;
+  --rust:#b8461f; --rust-soft:#f3e2d8; --sky:#2f6f8f;
+  --hero-bg:#0a0e16; --hero-ink:#ece6de; --hero-muted:#9a9fae; --hero-line:#1d2433; --flare:#ff8a5c;
+  --font-display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --font-body:"Inter Tight",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --s-1:.8125rem; --s0:1rem; --s1:1.1875rem; --s2:1.5rem;
+  --s3:clamp(1.75rem,1.2rem + 2vw,2.5rem); --s4:clamp(2.7rem,1.4rem + 5.4vw,5.5rem);
+  --wrap:72rem;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#12100f;--panel:#1a1716;--ink:#ece6de;--muted:#a3968c;--line:#2e2825;--rust:#f0875c;--rust-soft:#2c1c15;--sky:#7fb8d4;color-scheme:dark}
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:var(--s0);line-height:1.6}
+a{color:var(--rust);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--rust);outline-offset:3px;border-radius:2px}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:max(18px,env(safe-area-inset-left,0px))}
+.mono{font-family:var(--font-mono)}
+.label{font-family:var(--font-mono);font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.skip{position:absolute;left:-999px;top:0}.skip:focus{left:16px;top:16px;background:var(--panel);padding:8px 12px;z-index:40}
+
+/* Hero */
+.hero{background:var(--hero-bg);color:var(--hero-ink);position:relative;isolation:isolate;overflow:hidden}
+.hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:2rem;align-items:center;padding-block:2.25rem 3rem}
+@media (min-width:901px){.hero .wrap{min-height:min(54rem,94svh);grid-template-rows:auto 1fr;padding-bottom:5rem}}
+.topbar{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.75rem 1.5rem;font-family:var(--font-mono);font-size:var(--s-1);color:var(--hero-muted);border-bottom:1px solid var(--hero-line);padding-bottom:1rem}
+.topbar nav{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem}
+.topbar a{color:var(--hero-ink);text-decoration:none}.topbar a:hover{text-decoration:underline}
+.live{display:inline-flex;align-items:center;gap:.5rem}
+.live i{width:7px;height:7px;border-radius:50%;background:#5fd3a6;box-shadow:0 0 8px #5fd3a6;animation:blink 2.2s infinite}
+@keyframes blink{50%{opacity:.3}}
+.hero-text{display:grid;gap:1.25rem;min-width:0;padding-block:1.5rem}
+.hero h1{font-size:var(--s4);font-weight:800;line-height:.93;letter-spacing:-.035em}
+.hero h1 em{font-style:normal;color:var(--flare)}
+.role{font-family:var(--font-display);font-weight:500;font-size:var(--s2);line-height:1.25;color:#f2c3ac}
+.lede{max-width:35rem;color:var(--hero-muted);font-size:var(--s1);line-height:1.55}
+.lede strong{color:var(--hero-ink);font-weight:500}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem;padding:0;margin:0;list-style:none}
+.facts li{font-family:var(--font-mono);font-size:var(--s-1);border:1px solid #2c3446;border-radius:3px;padding:.2rem .55rem;color:#cfd3dc}
+.facts li.hi{border-color:rgba(255,138,92,.5);color:var(--flare)}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-mono);font-size:.875rem;font-weight:500;padding:.6rem 1rem;border-radius:3px;text-decoration:none;border:1px solid #3a4458;color:var(--hero-ink);background:transparent;cursor:pointer}
+.btn:hover{border-color:var(--flare);text-decoration:none}
+.btn.primary{background:var(--flare);border-color:var(--flare);color:#1a0c05}
+.btn.primary:hover{background:#ffa47f}
+.hero-figure{margin:0;display:grid;gap:1rem;justify-items:center;min-width:0}
+
+.stack{position:relative;width:100%;max-width:520px;aspect-ratio:4/3.3;cursor:pointer;margin-top:1rem}
+.stack .card{position:absolute;left:8%;top:6%;width:84%;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:#141a26;border:1px solid #2c3446;box-shadow:0 24px 50px -18px rgba(0,0,0,.75);transition:transform .8s cubic-bezier(.2,.7,.2,1),opacity .8s,filter .8s;will-change:transform}
+.stack .card .fill{position:absolute;inset:-20px;background-size:cover;background-position:center;filter:blur(18px) brightness(.55);transform:scale(1.1)}
+.stack .card img{position:relative;width:100%;height:100%;object-fit:contain;display:block}
+.stack .card span{z-index:1;position:absolute;left:0;right:0;bottom:0;padding:22px 14px 10px;font-family:var(--font-mono);font-size:.75rem;color:#ece6de;background:linear-gradient(transparent,rgba(10,14,22,.85))}
+.stack .card[data-pos="0"]{transform:translate(0,0) rotate(-2deg);z-index:6}
+.stack .card[data-pos="1"]{transform:translate(9%,-7%) rotate(5deg) scale(.95);z-index:5;filter:brightness(.7)}
+.stack .card[data-pos="2"]{transform:translate(-10%,-9%) rotate(-9deg) scale(.9);z-index:4;filter:brightness(.55)}
+.stack .card[data-pos="3"]{transform:translate(14%,4%) rotate(11deg) scale(.86);z-index:3;filter:brightness(.45)}
+.stack .card[data-pos="4"]{transform:translate(-14%,6%) rotate(-14deg) scale(.82);z-index:2;filter:brightness(.38)}
+.stack .card[data-pos="5"]{transform:translate(0,10%) rotate(3deg) scale(.78);z-index:1;filter:brightness(.3)}
+.stack .card.leaving{transform:translate(-70%,25%) rotate(-24deg) scale(.9)!important;opacity:0}
+.stack:hover .card[data-pos="0"]{transform:translate(0,-2%) rotate(0deg) scale(1.02)}
+@media (prefers-reduced-motion:reduce){.stack .card{transition:none}}
+
+.hero-photo{position:relative;width:100%;max-width:560px;animation:float 7s ease-in-out infinite}
+.hero-photo::before{content:"";position:absolute;inset:8% 6%;z-index:-1;background:radial-gradient(closest-side,rgba(255,138,92,.35),transparent);filter:blur(40px)}
+.hero-photo img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #2c3446;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);transform:perspective(1200px) rotateY(-6deg) rotateX(2deg);transition:transform .4s ease-out}
+.hero-photo:hover img{transform:none}
+@keyframes float{50%{translate:0 -10px}}
+.hero-figure figcaption{font-family:var(--font-mono);font-size:.75rem;color:var(--hero-muted);display:flex;flex-wrap:wrap;gap:.25rem 1rem;justify-content:center}
+.hero-figure figcaption span::before{content:"◦ ";color:var(--flare)}
+.scroll-cue{position:absolute;left:50%;bottom:1.25rem;transform:translateX(-50%);display:grid;justify-items:center;gap:.45rem;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.22em;text-transform:uppercase;color:var(--hero-muted);text-decoration:none}
+.scroll-cue i{display:block;width:1px;height:2.25rem;background:linear-gradient(var(--flare),transparent);transform-origin:top;animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0)}55%{transform:scaleY(1);opacity:1}100%{opacity:0}}
+@media (max-width:900px){.scroll-cue{display:none}}
+
+/* Sections */
+section{padding-block:4.5rem}
+section+section{border-top:1px solid var(--line)}
+.section-head{display:grid;gap:.5rem;margin-bottom:2.25rem;max-width:46rem}
+.section-head h2{font-size:var(--s3);font-weight:750;letter-spacing:-.02em;line-height:1.1}
+.section-head p{color:var(--muted)}
+
+/* Index */
+.index-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+table.index{width:100%;border-collapse:collapse;min-width:46rem;font-size:.9375rem}
+.index th,.index td{text-align:left;padding:.8rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}
+.index tr:last-child td{border-bottom:0}
+.index th{font-family:var(--font-mono);font-weight:500;font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--rust-soft)}
+.index td.yr{font-family:var(--font-mono);white-space:nowrap;color:var(--muted)}
+.index td.parts{font-family:var(--font-mono);font-size:.8125rem;color:var(--muted)}
+.index a{font-weight:600;text-decoration:none;color:var(--ink)}
+.index a:hover{color:var(--rust);text-decoration:underline}
+.index tbody tr:hover{background:var(--rust-soft)}
+.pill{font-family:var(--font-mono);font-size:.6875rem;color:var(--rust);border:1px solid currentColor;border-radius:999px;padding:.05rem .45rem;margin-left:.4rem;white-space:nowrap}
+
+/* Project spreads */
+.project{display:grid;gap:2rem;padding-block:3.5rem;border-top:1px solid var(--line);scroll-margin-top:1rem}
+.project-head{display:grid;gap:.6rem;max-width:48rem}
+.project-head::before{content:"";display:block;height:2px;width:100%;max-width:48rem;margin-bottom:.75rem;background:linear-gradient(90deg,var(--rust),transparent);transform-origin:left;transition:transform 1.3s cubic-bezier(.7,0,.2,1) .15s}
+html.js .project-head:not(.in)::before{transform:scaleX(0)}
+.eyebrow{display:flex;flex-wrap:wrap;gap:.35rem 1rem;font-family:var(--font-mono);font-size:var(--s-1);color:var(--muted)}
+.eyebrow .tag{color:var(--rust)}
+.project h3{font-size:clamp(1.6rem,1.2rem + 1.6vw,2.3rem);font-weight:750;line-height:1.1;letter-spacing:-.02em}
+.role-line{font-family:var(--font-display);font-size:var(--s1);font-weight:500;color:var(--rust);margin-top:-.2rem}
+.summary{font-size:var(--s1);line-height:1.55;max-width:44rem}
+.project-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:2.5rem;align-items:start}
+.writeup{display:grid;gap:1.5rem;min-width:0}
+.writeup h4{margin:0 0 .5rem;font-family:var(--font-mono);font-weight:500;font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.writeup ul{margin:0;padding-left:1.1rem;display:grid;gap:.5rem}
+.writeup li::marker{color:var(--rust)}
+.writeup li{max-width:40rem}
+.note{border-left:2px solid var(--rust);padding:.75rem 1rem;background:var(--panel);font-size:.9375rem;color:var(--muted);max-width:40rem}
+.note strong{color:var(--ink);font-weight:600}
+.debug{display:grid;gap:.75rem;margin:0}
+.debug div{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:1rem;font-size:.9375rem}
+.debug dt{font-family:var(--font-mono);font-size:.8125rem;color:var(--rust);padding-top:.15rem}
+.debug dd{margin:0}
+@media (max-width:640px){.debug div{grid-template-columns:minmax(0,1fr);gap:.15rem}}
+.side{display:grid;gap:1.25rem;min-width:0}
+.spec{margin:0;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+.spec div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:1rem;padding:.6rem 1rem;border-bottom:1px solid var(--line)}
+.spec div:last-child{border-bottom:0}
+.spec dt{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-top:.2rem}
+.spec dd{margin:0;font-size:.9375rem}
+.repo{font-family:var(--font-mono);font-size:.875rem}
+.credit{font-size:.875rem;color:var(--muted)}
+.diagram{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:1rem}
+.diagram svg{width:100%;height:auto;display:block}
+.diagram figcaption{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);margin-top:.5rem}
+figure{margin:0}
+
+/* Minor projects */
+.minor{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:1rem}
+.minor article{border:1px solid var(--line);border-radius:4px;padding:1.25rem;background:var(--panel);display:grid;gap:.5rem;align-content:start;scroll-margin-top:1rem}
+.minor h3{font-size:var(--s1);font-weight:700}
+.minor p{color:var(--muted);font-size:.9375rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;margin:0;padding:0}
+.chips li{font-size:.8125rem;border:1px solid var(--line);background:var(--paper);border-radius:3px;padding:.15rem .5rem}
+.minor .chips{margin-top:.4rem}
+.minor .chips li{font-family:var(--font-mono);font-size:.72rem;color:var(--muted)}
+
+/* Experience */
+.jobs{display:grid;gap:2.5rem}
+.job{display:grid;grid-template-columns:13rem minmax(0,1fr);gap:2rem}
+.job .when{font-family:var(--font-mono);font-size:var(--s-1);color:var(--muted);display:grid;gap:.25rem;align-content:start}
+.job h3{font-size:var(--s2);font-weight:700;margin-bottom:.15rem}
+.job .sub{color:var(--muted);margin-bottom:.75rem}
+.job ul{margin:0;padding-left:1.1rem;display:grid;gap:.5rem;max-width:44rem}
+.job li::marker{color:var(--rust)}
+
+/* Skills / edu */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem 2.5rem}
+.skills h3{font-family:var(--font-mono);font-weight:500;font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.skills .chips li{background:var(--panel);font-size:.875rem;padding:.2rem .55rem}
+.edu{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2.5rem}
+.edu h3{font-size:var(--s1);font-weight:700}
+.edu p{color:var(--muted)}
+.langs{display:grid;gap:.6rem;margin-top:.5rem}
+.lang{display:grid;grid-template-columns:5.5rem 1fr auto;gap:.75rem;align-items:center;font-size:.9375rem}
+.lang .bar{height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.lang .bar i{display:block;height:100%;background:var(--rust)}
+.lang .lv{font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+
+/* Contact */
+.contact{background:var(--hero-bg);color:var(--hero-ink);border-top:0;padding-block:4.5rem 3rem}
+.contact .wrap{display:grid;gap:2rem}
+.contact h2{font-size:var(--s3);font-weight:750;line-height:1.1;max-width:34rem;letter-spacing:-.02em}
+.contact h2 em{font-style:normal;color:var(--flare)}
+.contact p{color:var(--hero-muted);max-width:38rem}
+.contact-rows{display:grid;border-top:1px solid var(--hero-line)}
+.contact-rows div{display:grid;grid-template-columns:7rem minmax(0,1fr) auto;gap:1rem;align-items:center;padding:.9rem 0;border-bottom:1px solid var(--hero-line)}
+.contact-rows dt{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--hero-muted)}
+.contact-rows dd{margin:0;font-family:var(--font-mono);font-size:.9375rem;overflow-wrap:anywhere}
+.contact-rows a{color:var(--hero-ink)}
+.copy{font-family:var(--font-mono);font-size:.75rem;padding:.3rem .6rem;border:1px solid #3a4458;background:transparent;color:var(--hero-ink);border-radius:3px;cursor:pointer}
+.copy:hover{border-color:var(--flare)}
+.footer-line{font-family:var(--font-mono);font-size:.75rem;color:var(--hero-muted);display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;justify-content:space-between;padding-top:1rem}
+
+/* Progress + rail */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:30;pointer-events:none}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--sky),var(--rust));transform:scaleX(0);transform-origin:left}
+.rail{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:25;display:none;flex-direction:column;gap:.95rem;opacity:0;pointer-events:none;transition:opacity .4s}
+.rail::before{content:"";position:absolute;left:50%;top:6px;bottom:6px;width:1px;background:var(--line)}
+.rail.show{opacity:1;pointer-events:auto}
+.rail a{position:relative;display:block;width:12px;height:12px}
+.rail .dot{position:absolute;inset:1px;border:1.5px solid var(--muted);border-radius:50%;background:var(--paper);transition:all .25s}
+.rail a.on .dot{background:var(--rust);border-color:var(--rust);transform:scale(1.3)}
+.rail .txt{position:absolute;right:24px;top:50%;transform:translate(6px,-50%);white-space:nowrap;font-family:var(--font-mono);font-size:.75rem;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:.15rem .5rem;border-radius:3px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.rail a:hover .txt,.rail a:focus-visible .txt{opacity:1;transform:translate(0,-50%)}
+@media (min-width:1300px){.rail{display:flex}}
+
+/* Reveal */
+html.js :is(.hero-text>*,.hero-figure,.section-head,.index-scroll,.project-head,.writeup>*,.side>*,.minor>article,.job,.skills>div,.edu>div,.contact .wrap>*){opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.2,.65,.2,1) var(--d,0ms),transform .85s cubic-bezier(.2,.65,.2,1) var(--d,0ms)}
+html.js :is(.hero-text>*,.hero-figure,.section-head,.index-scroll,.project-head,.writeup>*,.side>*,.minor>article,.job,.skills>div,.edu>div,.contact .wrap>*).in{opacity:1;transform:none}
+html.js .spec>div{opacity:0;transform:translateX(-12px);transition:opacity .5s ease calc(var(--d,0ms) + var(--i,0)*70ms + 150ms),transform .5s ease calc(var(--d,0ms) + var(--i,0)*70ms + 150ms)}
+html.js .spec.in>div,html.js .side>.in .spec>div,html.js .side>.spec.in>div{opacity:1;transform:none}
+
+
+/* Galleries + lightbox */
+.gallery{display:grid;gap:1rem;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.gallery figure{display:grid;gap:.5rem;align-content:start;min-width:0}
+.gallery img{width:100%;height:auto;display:block;border-radius:3px;border:1px solid var(--line);background:var(--panel)}
+.gallery .crop img{aspect-ratio:4/3;object-fit:cover}
+.gallery .tall img{aspect-ratio:3/4}
+.gallery .contain img{object-fit:contain;background:#fff}
+.gallery .wide{grid-column:span 2}
+.gallery .full{grid-column:1/-1}
+.gallery video{width:100%;height:auto;display:block;border-radius:3px;border:1px solid var(--line);background:#000}
+.gallery figcaption{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);line-height:1.45}
+.team-logo{display:flex;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:4px;background:#0a0e16;padding:.75rem 1rem;color:#cfd3dc}
+.team-logo img{width:72px;height:72px;border-radius:50%;display:block}
+.team-logo b{display:block;font-family:var(--font-display);font-size:1.1rem;color:#ece6de}
+.team-logo span{font-family:var(--font-mono);font-size:.75rem;color:#9a9fae}
+
+/* Uniform row heights in project galleries */
+.project > .gallery figure:not(.full) img{height:var(--h,360px);aspect-ratio:auto;object-fit:cover}
+.project > .gallery figure.fit img{object-fit:contain}
+.project > .gallery figure.fit.dark img{background:#0e1115}
+.project > .gallery figure.fit.light img{background:#fff}
+@media (max-width:640px){.project > .gallery figure:not(.full) img{height:auto;max-height:420px}}
+
+.zoomable{cursor:zoom-in}
+.lightbox{width:100%;height:100%;max-width:100%;max-height:100%;margin:0;border:0;background:transparent;color:#ece6de;padding:16px}
+.lightbox[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:.75rem;justify-items:center;align-items:center}
+.lightbox::backdrop{background:rgba(6,8,12,.92);backdrop-filter:blur(6px)}
+.lightbox img{max-width:min(1500px,100%);max-height:100%;min-height:0;object-fit:contain;border-radius:3px;cursor:zoom-out}
+.lb-close{justify-self:end;font-family:var(--font-mono);font-size:.8125rem;padding:.4rem .8rem;border:1px solid #3a4458;background:transparent;color:#ece6de;border-radius:3px;cursor:pointer}
+#lb-cap{font-family:var(--font-mono);font-size:.8125rem;color:#b9bfcc;text-align:center;max-width:64ch}
+html.js .gallery>figure{opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.2,.65,.2,1) var(--d,0ms),transform .85s cubic-bezier(.2,.65,.2,1) var(--d,0ms)}
+html.js .gallery>figure.in{opacity:1;transform:none}
+html.js .gallery>figure img{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s cubic-bezier(.7,0,.2,1) calc(var(--d,0ms) + 120ms)}
+html.js .gallery>figure.in img{clip-path:inset(0)}
+@media (max-width:900px){.gallery[style*="--cols:4"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.gallery{grid-template-columns:minmax(0,1fr)}.gallery .wide{grid-column:auto}}
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:minmax(0,1fr);gap:.5rem}
+  .hero-figure{grid-row:2}.hero-text{grid-row:3;padding-top:0}
+  .project-body,.edu{grid-template-columns:minmax(0,1fr)}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .job{grid-template-columns:minmax(0,1fr);gap:.75rem}
+}
+@media (max-width:640px){
+  section{padding-block:3.25rem}
+  .skills{grid-template-columns:minmax(0,1fr)}
+  .spec div{grid-template-columns:6rem minmax(0,1fr)}
+  .contact-rows div{grid-template-columns:minmax(0,1fr) auto}
+  .contact-rows dt{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){.hero-photo,.scroll-cue i,.live i{animation:none}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to projects</a>
+<div class="progress" aria-hidden="true"><span></span></div>
+<nav class="rail" aria-label="Jump to section">
+  <a href="#cansat"><span class="dot"></span><span class="txt">CanSat 2026</span></a>
+  <a href="#rover-pcb"><span class="dot"></span><span class="txt">Rover 2026 – ERC</span></a>
+  <a href="#swarmstore"><span class="dot"></span><span class="txt">SwarmStore warehouse</span></a>
+  <a href="#cerepal"><span class="dot"></span><span class="txt">Quadruped leg</span></a>
+  <a href="#more"><span class="dot"></span><span class="txt">More projects</span></a>
+  <a href="#experience"><span class="dot"></span><span class="txt">Experience</span></a>
+  <a href="#skills"><span class="dot"></span><span class="txt">Toolkit</span></a>
+  <a href="#contact"><span class="dot"></span><span class="txt">Contact</span></a>
+</nav>
+
+<header class="hero">
+  <canvas class="hero-canvas" id="sky" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="topbar">
+      <span class="live"><i></i>Berlin, Germany</span>
+      <nav aria-label="Sections">
+        <a href="#work">Projects</a><a href="#experience">Experience</a><a href="#skills">Toolkit</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="hero-text">
+      <h1>Prithiv Ramvasan<br>Vetri Selvan<em>.</em></h1>
+      <p class="role">Mechatronics engineer: rovers, CanSats &amp; robots that talk to each other</p>
+      <p class="lede">I work where <strong>electronics, RF links and backend code</strong> meet. That means guidance code that steers a CanSat under a paraglider, motor-driver PCBs for planetary rovers, and warehouse robots that auction jobs among themselves over ESP-NOW. I'm a 6th-semester Mechatronic Systems Engineering student at SRH Berlin.</p>
+      <ul class="facts" aria-label="Highlights">
+        <li class="hi">#14 of 100+ teams · CanSat 2026</li>
+        <li>European Rover Challenge · ETE</li>
+        <li>MotionLab.Berlin Batch 9</li>
+      </ul>
+      <div class="cta">
+        <a class="btn primary" href="#work">See projects</a>
+        <a class="btn" href="https://github.com/Prithiv-vetri08" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/prithiv-ramvasan-vetri-selvan-70a47b244" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <figure class="hero-figure">
+      <div class="stack" id="stack" role="img" aria-label="A stack of project photos: the GHOST rover, the CanSat launch pad, the six-motor carrier PCB, the SwarmStore cell, the quadruped leg and the CanSat ground station.">
+        <div class="card" data-i="0"><i class="fill" style="background-image:url(assets/img/rover-side.webp)"></i><img src="assets/img/rover-side.webp" alt="" fetchpriority="high"><span>GHOST rover · ERC 2026</span></div>
+        <div class="card" data-i="1"><i class="fill" style="background-image:url(assets/img/cansat-launchpad.webp)"></i><img src="assets/img/cansat-launchpad.webp" alt="" ><span>CanSat 2026 · Virginia</span></div>
+        <div class="card" data-i="2"><i class="fill" style="background-image:url(assets/img/rover-pcb-top.webp)"></i><img src="assets/img/rover-pcb-top.webp" alt="" ><span>6-motor carrier PCB</span></div>
+        <div class="card" data-i="3"><i class="fill" style="background-image:url(assets/img/swarm-3d.webp)"></i><img src="assets/img/swarm-3d.webp" alt="" ><span>SwarmStore · live 3D view: 2 AGVs + arm</span></div>
+        <div class="card" data-i="4"><i class="fill" style="background-image:url(assets/img/quad-leg-belt.webp)"></i><img src="assets/img/quad-leg-belt.webp" alt="" ><span>Quadruped leg · Cerepal</span></div>
+        <div class="card" data-i="5"><i class="fill" style="background-image:url(assets/img/cansat-gs-live.webp)"></i><img src="assets/img/cansat-gs-live.webp" alt="" ><span>CanSat ground station</span></div>
+      </div>
+      <figcaption><span>Click the stack to shuffle</span></figcaption>
+    </figure>
+  </div>
+  <a class="scroll-cue" href="#work"><span>Scroll</span><i aria-hidden="true"></i></a>
+</header>
+
+<main>
+  <section id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Selected work</span>
+        <h2 id="work-title">From telemetry link to a robot that moves</h2>
+        <p>Three full write-ups for my main projects, then shorter notes on the rest. They cover avionics, rover electronics, multi-robot firmware, ML and backend.</p>
+      </div>
+
+      <div class="index-scroll" role="region" aria-label="Project list" tabindex="0">
+        <table class="index">
+          <thead><tr><th scope="col">Project</th><th scope="col">Year</th><th scope="col">What it is</th><th scope="col">Key parts</th></tr></thead>
+          <tbody>
+            <tr><td><a href="#cansat">CanSat 2026</a><span class="pill">#14 world</span></td><td class="yr">2025–26</td><td>Guided paraglider descent + portable ground station</td><td class="parts">Raspberry Pi 4B · XBee XR900 · INA219 · servos</td></tr>
+            <tr><td><a href="#rover-pcb">Rover 2026 – ERC (GHOST)</a></td><td class="yr">2026</td><td>One board hosting six motor controllers</td><td class="parts">Teensy 4.1 · 6 Maxon controllers on 1 board · 313 × 264 mm</td></tr>
+            <tr><td><a href="#swarmstore">SwarmStore</a></td><td class="yr">2026</td><td>Robotic warehouse: AGVs, arm, label vision</td><td class="parts">ESP32-S3 · Pi 4B / 3A+ · MQTT · ESP-NOW · CNN</td></tr>
+            <tr><td><a href="#cerepal">Low-cost quadruped leg</a><span class="pill">now</span></td><td class="yr">2026</td><td>Single-leg test rig with Cerepal</td><td class="parts">Linear rail · belt-driven knee · CAN</td></tr>
+            <tr><td><a href="#urban-rover">Urban Rover</a></td><td class="yr">2026</td><td>Autonomous delivery robot, software lead</td><td class="parts">Autonomy stack · depot logistics</td></tr>
+            <tr><td><a href="#mri">Brain-tumour MRI classifier</a></td><td class="yr">2026</td><td>Four-block CNN</td><td class="parts">Python · CNN · 128×128×3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ===== CanSat ===== -->
+      <article class="project" id="cansat" aria-labelledby="cansat-title" style="margin-top:3.5rem;border-top:0;padding-top:0">
+        <div class="project-head">
+          <div class="eyebrow"><span>Aug 2024 – Jun 2026</span><span class="tag">Software · GNC · Ground station · Flown</span></div>
+          <h3 id="cansat-title">CanSat 2026</h3>
+          <p class="role-line">Paraglider GNC &amp; a portable ground station</p>
+          <p class="summary">Two seasons as a software developer for Team Skybound (Team ID 1049) in the international CanSat competition, which is run by the American Astronautical Society with NASA involvement. In June 2026 in Virginia we placed <strong>14th out of 100+ teams worldwide</strong>.</p>
+        </div>
+        <div class="project-body">
+          <div class="writeup">
+            <div>
+              <h4>Flight side</h4>
+              <ul>
+                <li><strong>The mission:</strong> the payload rides in a container under a parachute (about 15 m/s), separates at 80 % of peak altitude, deploys a paraglider and steers toward a GPS target at about 5 m/s, then drops a hen's egg in a honeycomb container 2 m above the ground, sending telemetry at 1 Hz the whole way.</li>
+                <li>Wrote a guidance, navigation &amp; control system in Python on a Raspberry Pi to steer the payload under a paraglider during descent.</li>
+                <li>Designed the descent-control hardware: servo-actuated brake lines that the GNC loop drives to turn the wing.</li>
+                <li>Set up the XBee XR900 long-range radio link that carries telemetry down to the ground.</li>
+                <li>Generated realistic synthetic telemetry across every sensor column, so the ground software could be tested before flight.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Ground station</h4>
+              <ul>
+                <li>Built a portable ground station in a hard case: a screen in the lid, a Raspberry Pi 4B running from a 21700 battery pack, and a front panel with power, calibration and payload-release switches beside the XBee radio. The CanSat travels in the same case.</li>
+                <li>An INA219 monitors the station's own power, so battery state is visible in the field.</li>
+                <li>Wrote the <strong>Skybound Ground Station</strong> software: live altitude, pressure, temperature, voltage and current plots, a 3D IMU attitude view, a GPS mini-map, a command panel (simulation mode, egg and payload release) and log export.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>The night before environmental testing</h4>
+              <dl class="debug">
+                <div><dt>Symptom</dt><dd>The first assembled flight board came back from the manufacturer with power shorted to ground.</dd></div>
+                <div><dt>Cause</dt><dd>The GND and VCC pads of one JST connector had been fabricated shorted together: the design was fine, the board wasn't. With tests days away, Mustafa and I stayed up all night, cut the traces out of that connector to isolate the short and hand-wired power from underneath. The patched board passed environmental testing with a perfect score.</dd></div>
+                <div><dt>Test</dt><dd>The egg must release 2 m above ground, so we built our own vacuum chamber (aluminium frame and a vacuum bag) to simulate altitude: as air flows back in, the barometer sees the altitude drop and the release fires.</dd></div>
+              </dl>
+            </div>
+            <div>
+              <h4>2025 season</h4>
+              <ul><li>First year on the team: a payload that collected atmospheric data, deployed a descent system and streamed telemetry in real time.</li></ul>
+            </div>
+            <div class="note"><strong>Beyond code.</strong> I also wrote the environmental test documentation and competition presentations, and filled in the scoresheets for judging.</div>
+            <p class="credit">The 4-layer avionics PCB was designed by our team and electrical lead, Mustafa Dalal. Team: Mustafa Dalal, Mohammed Abubakr Khan, Ilya Shynkevich, Munjalsinh Zala, Muhammad Fidyan Nagaria and me; mentor Ajinkya Keskar.</p>
+          </div>
+          <div class="side">
+            <div class="team-logo"><img src="assets/img/skybound-logo.webp" width="600" height="600" alt="Team Skybound CanSat project logo: a satellite orbiting Earth."><div><b>Team Skybound</b><span>CanSat · Team ID 1049 · SRH Berlin</span></div></div>
+            <dl class="spec">
+              <div><dt>Role</dt><dd>Software developer, 2025 &amp; 2026</dd></div>
+              <div><dt>Result</dt><dd>14th of 100+ teams, CanSat 2026 (Virginia, USA); egg recovered intact; perfect environmental-test score</dd></div>
+              <div><dt>GNC</dt><dd>Python on Raspberry Pi Zero 2 W</dd></div>
+              <div><dt>Brakes</dt><dd>2 × MG90S servos on the steering lines</dd></div>
+              <div><dt>Mission</dt><dd>Separate at 80 % apogee, paraglider to GPS target, egg release at 2 m</dd></div>
+              <div><dt>Radio</dt><dd>Digi XBee XR900, telemetry at 1 Hz</dd></div>
+              <div><dt>Ground</dt><dd>Raspberry Pi 4B, 21700 pack, INA219</dd></div>
+              <div><dt>Sensors</dt><dd>BNO055, NEO-M9N GPS, BMP581, INA260</dd></div>
+              <div><dt>Structure</dt><dd>PA-CF frame, TPU 95A nose cone, honeycomb egg container</dd></div>
+              <div><dt>Power</dt><dd>2 × INR18650 Li-ion, 12.95 Wh</dd></div>
+              <div><dt>Mass</dt><dd>1000 g ± 10 g</dd></div>
+            </dl>
+            <div class="gallery" style="--cols:2">
+              <figure class="crop">
+                <img src="assets/img/cansat-egg-holder.webp" width="1050" height="1400" loading="lazy" alt="3D-printed black egg container with a cross-shaped opening and white foam padding inside.">
+                <figcaption>Egg container: printed shell, foam inside.</figcaption>
+              </figure>
+              <figure class="crop">
+                <img src="assets/img/cansat-egg.webp" width="1050" height="1400" loading="lazy" alt="A team member in a Skybound shirt holding the competition egg, marked 131 and 62 g, unbroken after the flight.">
+                <figcaption>The egg after flight: it survived intact.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="gallery" style="--cols:3;--h:380px">
+          <figure class="wide">
+            <img src="assets/img/cansat-team.webp" width="990" height="687" loading="lazy" alt="Team Skybound in SRH and SolidWorks team shirts in front of the American Astronautical Society backdrop.">
+            <figcaption>Team Skybound at the CanSat 2026 competition, hosted by the American Astronautical Society.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/cansat-launchpad.webp" width="960" height="1280" loading="lazy" alt="Two team members beside the rocket on its launch rail at the CanSat launch site in Virginia, with CanSat, NASA and SSAI banners behind.">
+            <figcaption>On the launch pad in Virginia, June 2026.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/cansat-payload.webp" width="1050" height="1400" loading="lazy" alt="The CanSat payload laid out with its orange SRH-branded container, nose cone and packed red, white and black paraglider wing.">
+            <figcaption>The payload with its container and packed paraglider wing.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/cansat-avionics.webp" width="1050" height="1400" loading="lazy" alt="Close-up of the avionics: a Digi XBee radio on its adapter board next to a Raspberry Pi Zero 2 W, with MG90S servos above and wiring around.">
+            <figcaption>Digi XBee radio beside the Raspberry Pi Zero 2 W flight computer.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/cansat-stack.webp" width="1050" height="1400" loading="lazy" alt="Front of the payload frame: two MG90S servos with line spools at the top, the Raspberry Pi and power boards stacked below, battery at the bottom.">
+            <figcaption>Brake servos and spools on top, computer and power stack below.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/cansat-gs-case.webp" width="819" height="950" loading="lazy" alt="The ground station in a black hard case: screen in the lid, the orange CanSat stowed in foam, and a control panel with toggle switches, indicator lights and an XBee radio.">
+            <figcaption>Ground station case: screen, stowed CanSat, switch panel and XBee.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/cansat-gs-live.webp" width="819" height="1080" loading="lazy" alt="The ground station powered on, showing the Skybound Ground Station software with telemetry plots, IMU 3D graphs, a mini-map and command buttons; panel lights are on.">
+            <figcaption>Skybound Ground Station software running in the field case.</figcaption>
+          </figure>
+          <figure class="fit light">
+            <img src="assets/img/cansat-poster.webp" width="637" height="745" loading="lazy" alt="Excerpt from the Team Skybound CanSat 2026 poster: abstract, objectives, system overview, mechanical design and descent control sections.">
+            <figcaption>From our CanSat 2026 poster: mission, structure and descent control.</figcaption>
+          </figure>
+          <figure class="full">
+            <img src="assets/img/cansat-drawing.webp" width="1097" height="769" loading="lazy" alt="SolidWorks drawing of the Skybound payload dated 27/03/26: dimensioned front view of the frame and nose cone, and an isometric render with the electronics stack and egg container.">
+            <figcaption>Payload drawing (SolidWorks, 27 Mar 2026): frame, electronics stack and egg container.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ===== Rover PCBs ===== -->
+      <article class="project" id="rover-pcb" aria-labelledby="pcb-title">
+        <div class="project-head">
+          <div class="eyebrow"><span>Aug 2025 – Mar 2026</span><span class="tag">PCB design · Motor control · Rover</span></div>
+          <h3 id="pcb-title">Rover 2026 – ERC</h3>
+          <p class="role-line">GHOST, a six-wheeled planetary rover · drive electronics</p>
+          <p class="summary">GHOST is the Extra Terrestrial Engineers' six-wheeled planetary rover, built from scratch by students at SRH Berlin: rocker-bogie + X-differential suspension, six Maxon brushless drive motors, a 6-DOF arm, a science payload bay, and ROS 2 navigation on a Jetson Orin Nano with a Teensy 4.1 for real-time control. The team qualified for the Australian Rover Challenge 2026 and is working toward ERC 2026. My part is the electronics that turn commands into wheel and arm motion.</p>
+        </div>
+        <div class="project-body">
+          <div class="writeup">
+            <div>
+              <h4>The problem</h4>
+              <p>Each of the six Maxon EC brushless motors has an encoder and needs 12 signal lines to the microcontroller: more than 70 connections for the drivetrain alone. As a loose harness that was fragile, hard to debug and prone to faults on rough terrain.</p>
+            </div>
+            <div>
+              <h4>What I built</h4>
+              <ul>
+                <li>Maxon sells its motor controllers as <strong>single-motor boards</strong>. I designed one <strong>313 × 264 mm carrier board</strong> in Autodesk Fusion Electronics that hosts <strong>six of them</strong>, one per wheel, each plugged into its own pair of 2 × 10 headers, all driven by a single Teensy 4.1. One board replaces six separate controller set-ups and their wiring.</li>
+                <li>Every Teensy I/O line to the drivers goes through a 1 kΩ series resistor, so a wiring fault on a long cable run can't take out the microcontroller.</li>
+                <li>Power input through a screw terminal with 1 A / 40 V Schottky diodes for reverse-polarity protection and a power-on LED.</li>
+                <li>5.08 mm screw-terminal blocks along both edges for every motor and encoder cable, so wheels can be swapped in the field without soldering.</li>
+                <li>More than 70 signal lines routed on two layers (88 nets, 50 parts, all top-side for hand assembly, a single via), with high-current motor power kept apart from the encoder and logic signals, and built for vibration and field loads.</li>
+                <li>A separate driver PCB for the robotic arm, and sensor integration across the rover.</li>
+              </ul>
+            </div>
+            <div class="note"><strong>Result.</strong> One serviceable board replaced the dense wiring harness. The boards were ready for the Australian Rover Challenge, but SRH withdrew the team from travelling because of the security situation. The work carries on into ERC.</div>
+            <div>
+              <h4>Team engineering</h4>
+              <ul>
+                <li>Co-wrote the Preliminary Design Review (PDR) documents for ERC 2026.</li>
+                <li>Presented our poster, "Concept to Terrain", at the Berliner Robotiknetzwerktreffen (Summer Edition, hosted by Berlin Partner at SRH &amp; NLND) on 22 July 2026.</li>
+                <li>Built the team's recruiting tools: a job-board style listings page and a live application form with an admin dashboard.</li>
+                <li>Wrote the lab rules documentation.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="side">
+            <div class="team-logo"><img src="assets/img/ete-logo.webp" width="400" height="400" alt="Extra Terrestrial Engineers team emblem: ETE letters in a hexagon with an orbit ring and circuit traces."><div><b>Extra Terrestrial Engineers</b><span>Rover team · SRH Berlin</span></div></div>
+            <dl class="spec">
+              <div><dt>Rover</dt><dd>GHOST: 6 wheels, rocker-bogie + X-differential</dd></div>
+              <div><dt>Team</dt><dd>Extra Terrestrial Engineers, SRH Berlin</dd></div>
+              <div><dt>Compute</dt><dd>Jetson Orin Nano (ROS 2, Nav2, RTAB-Map) + Teensy 4.1</dd></div>
+              <div><dt>Events</dt><dd>European Rover Challenge 2026, Australian Rover Challenge 2026</dd></div>
+              <div><dt>MCU</dt><dd>Teensy 4.1</dd></div>
+              <div><dt>Drives</dt><dd>6 Maxon single-motor controllers on one carrier board</dd></div>
+              <div><dt>Board</dt><dd>312.7 × 263.8 mm, 2 layers, 1 via</dd></div>
+              <div><dt>Parts</dt><dd>50 parts, 88 nets, 331 pads, all top-side</dd></div>
+              <div><dt>Protection</dt><dd>1 kΩ series on I/O, Schottky on power in</dd></div>
+              <div><dt>Arm</dt><dd>Dedicated arm-driver PCB</dd></div>
+              <div><dt>Tools</dt><dd>Autodesk Fusion Electronics</dd></div>
+            </dl>
+            <div class="gallery" style="--cols:1">
+              <figure>
+                <img src="assets/img/rover-pcb-schematic.webp" width="1252" height="633" loading="lazy" alt="Schematic: Teensy 4.1 in the centre with 1 kΩ series resistors, six Maxon module footprints, three on each side, screw terminals at the edges, and the protected power input.">
+                <figcaption>Schematic: Teensy 4.1, six Maxon modules, terminals and power input.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="gallery" style="--cols:2">
+          <figure class="fit dark">
+            <img src="assets/img/rover-pcb-top.webp" width="877" height="704" loading="lazy" alt="Top-view 3D render of the green motor-control PCB: Teensy 4.1 near the top centre with resistor arrays, six pairs of header rows for the Maxon modules, and screw terminals along both edges.">
+            <figcaption>3D render, top view: Teensy 4.1, six Maxon header pairs, terminal blocks.</figcaption>
+          </figure>
+          <figure class="fit dark">
+            <img src="assets/img/rover-pcb-layout.webp" width="889" height="712" loading="lazy" alt="Two-layer PCB layout with top copper in red and bottom copper in blue, six driver footprints and the Teensy in the centre.">
+            <figcaption>Layout: top copper red, bottom blue.</figcaption>
+          </figure>
+          <figure class="full">
+            <img src="assets/img/rover-bay.webp" width="1800" height="1010" loading="lazy" alt="Top-down view into the rover's electronics bay: Arduino Mega, two Cytron MDD10A motor drivers, heatsinked driver boards, a USB hub, a Logitech camera, terminal strips and dense wiring inside the aluminium frame.">
+            <figcaption>Electronics bay at ERC 2026: Arduino Mega, Cytron MDD10A drivers, USB hub and camera.</figcaption>
+          </figure>
+          <figure class="full">
+            <video src="assets/img/rover-bench.mp4" poster="assets/img/rover-bench-poster.webp" width="1280" height="720" autoplay muted loop playsinline controls preload="metadata" aria-label="Video walkaround of the rover on a test stand in the lab, with the electronics bay open and wheel modules wired up."></video>
+            <figcaption>Bench test in the lab: rover on its stand, electronics bay open with the motor-control boards visible.</figcaption>
+          </figure>
+          <figure class="full">
+            <img src="assets/img/rover-side.webp" width="1280" height="720" loading="lazy" alt="The ETE rover on a reflective floor: aluminium frame, rocker-style legs, chunky 3D-printed wheels and a red emergency stop on top.">
+            <figcaption>The ETE rover with its body panels on.</figcaption>
+          </figure>
+          <figure class="crop">
+            <img src="assets/img/rover-frame.webp" width="1600" height="1200" loading="lazy" alt="The bare rover chassis during assembly: aluminium extrusion frame, suspension arms and black 3D-printed wheel and steering modules on a wooden floor.">
+            <figcaption>Early build: bare extrusion frame with the suspension and wheel modules.</figcaption>
+          </figure>
+          <figure class="crop">
+            <img src="assets/img/rover-open-1.webp" width="1280" height="960" loading="lazy" alt="The rover with panels removed, showing the electronics bay with motor driver modules mounted on a vertical plate and the wiring harness running to each wheel.">
+            <figcaption>Panels off: driver modules and wiring in the electronics bay.</figcaption>
+          </figure>
+        </div>
+        <div class="gallery" style="--cols:3">
+          <figure class="full">
+            <img src="assets/img/rover-poster-session.webp" width="1269" height="952" loading="lazy" alt="Team members in front of the poster 'Concept to Terrain: Design, Autonomy and Field Testing of a Six-Wheeled Planetary Rover' at SRH, with the striped rover in front of them.">
+            <figcaption>Presenting "Concept to Terrain: Design, Autonomy and Field Testing of a Six-Wheeled Planetary Rover" at the Berliner Robotiknetzwerktreffen, 22 July 2026.</figcaption>
+          </figure>
+          <figure class="wide">
+            <img src="assets/img/rover-front.webp" width="1456" height="819" loading="lazy" alt="Front view of the rover on a lab floor: emergency stop, battery pack, electronics boards, a mast and the front wheel modules.">
+            <figcaption>Front view: E-stop, battery and electronics stack.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/rover-field.webp" width="724" height="1285" loading="lazy" alt="The rover on a sand test field, team members standing around it.">
+            <figcaption>Field testing on sand.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ===== SwarmStore ===== -->
+      <article class="project" id="swarmstore" aria-labelledby="swarm-title">
+        <div class="project-head">
+          <div class="eyebrow"><span>2026 · Embedded Systems final project · Group G103</span><span class="tag">ESP32-S3 · Raspberry Pi · MQTT · ESP-NOW · CNN</span></div>
+          <h3 id="swarm-title">SwarmStore: a robotic warehouse where the robots decide</h3>
+          <p class="summary">A table-top warehouse with line-following AGVs, a 5-DOF robotic arm and three cameras. A label is read, the AGVs auction the job among themselves over ESP-NOW, the arm loads the parcel and the AGV carries it across an 18-node RFID grid to one of four city racks. The station Pi watches everything over MQTT but never steers a robot.</p>
+        </div>
+        <div class="project-body">
+          <div class="writeup">
+            <div>
+              <h4>What I built</h4>
+              <ul>
+                <li><strong>Architecture</strong>: robots make their own decisions, the station only supervises, and every safety reaction (E-stop, link loss, obstacle) runs on the robot itself.</li>
+                <li><strong>AGV firmware (ESP32-S3)</strong>, one source for both robots: an ESP-NOW job auction where each AGV bids its D* Lite path cost, node reservations, LQR line following with a Kalman observer (3 on/off IR sensors), RFID localisation, tank turns, a 5 s watchdog and hold-on-link-loss failsafes.</li>
+                <li><strong>Station software (Pi 4B)</strong>: Mosquitto broker, job dispatcher, an OpenCV + zbar label reader for Code 128 / QR shipment labels, and an HTTPS web page with a live three.js 3D model of the cell, cameras, pause and E-stop.</li>
+                <li><strong>Arm software (Pi 3A+)</strong>: closed-form inverse kinematics by wrist decoupling and a fold–turn–unfold planner that rejects any path dipping below the table. Servo pulses come from the Pi's DMA hardware (pigpiod).</li>
+                <li><strong>Arm-pose CNN</strong>: one 4-block conv trunk per camera, fused to regress all five joint angles, so slips and collisions can be caught without joint sensors. Labels come free from the arm's own telemetry; exported to ONNX, 45 ms per prediction on the Pi 4.</li>
+                <li><strong>Security and tests</strong>: per-device broker logins with an ACL, HTTPS with hashed password, password-protected OTA, and a test suite where 386 of 394 automated tests pass.</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Debugging from the data</h4>
+              <dl class="debug">
+                <div><dt>Symptom</dt><dd>AGV1 dropped off the network five times mid-run.</dd></div>
+                <div><dt>Cause</dt><dd>Logs showed every drop-out happened at PWM 115–128 while starting or turning on the spot, with no software warning first: the supply sagged under motor load. A 60 ms coast before every wheel reversal cut it; a separate 5 V regulator is the full fix.</dd></div>
+                <div><dt>Symptom</dt><dd>Arm servos jittered at rest.</dd></div>
+                <div><dt>Cause</dt><dd>Software-timed PWM. Moving pulse generation to the Pi's DMA hardware removed it.</dd></div>
+                <div><dt>Symptom</dt><dd>Arm placed parcels off target.</dd></div>
+                <div><dt>Cause</dt><dd>70 overhead images showed the base tracking 0.94–1.00× for 30 frames, then jumping 15–21°: the shaft coupler was slipping. Exactly the fault the pose CNN is meant to flag automatically.</dd></div>
+              </dl>
+            </div>
+            <p class="credit">Team of two with Khalid Moh'd Ibrahim Irhaiem, who built the AGV hardware, floor grid and racks. We wired, tuned and demonstrated it together. The arm's mechanical design is the open-source "Fully functional 5-DOF robot arm" from MakerWorld.</p>
+            <a class="repo" href="https://github.com/Prithiv-vetri08/swarmstore" target="_blank" rel="noopener">github.com/Prithiv-vetri08/swarmstore ↗</a>
+          </div>
+          <div class="side">
+            <dl class="spec">
+              <div><dt>Station</dt><dd>Raspberry Pi 4B: Mosquitto, dispatcher, vision, Flask page</dd></div>
+              <div><dt>Arm</dt><dd>Pi 3A+, NEMA 17 base (TMC2209), 3 × RDS3225, SG90 gripper</dd></div>
+              <div><dt>AGVs</dt><dd>ESP32-S3, L298N, 4 × TT motors, 3 × IR, RC522 RFID, HC-SR04</dd></div>
+              <div><dt>Links</dt><dd>MQTT over Wi-Fi to the station, ESP-NOW between AGVs</dd></div>
+              <div><dt>Control</dt><dd>LQR + Kalman observer, D* Lite routing, IK planner</dd></div>
+              <div><dt>Floor</dt><dd>6 × 3 grid, 125 mm pitch, 18 MIFARE tags, 4 racks</dd></div>
+              <div><dt>Models</dt><dd>FSM, CFSM network, Petri net (bounded, deadlock-free)</dd></div>
+              <div><dt>Results</dt><dd>386/394 tests pass · best lap 14.5 s · 8/8 laps</dd></div>
+            </dl>
+            <div class="gallery" style="--cols:1">
+              <figure>
+                <img src="assets/img/swarm-arm.webp" width="669" height="1124" loading="lazy" alt="The robotic arm with labels: NEMA 17 base on a slewing ring, RDS3225 shoulder, elbow and wrist servos, and SG90 gripper.">
+                <figcaption>Arm 1, labelled.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="gallery" style="--cols:3;--h:400px">
+          <figure class="full">
+            <img src="assets/img/swarm-pickplace.webp" width="1800" height="335" loading="lazy" alt="Three frames: the arm lifts a labelled parcel, lowers it into the AGV bed at the dock, and moves back with the parcel in the bed.">
+            <figcaption>Pick and place during the live demo: lift, lower into the AGV bed, release.</figcaption>
+          </figure>
+          <figure class="wide fit dark">
+            <img src="assets/img/swarm-dashboard.webp" width="1800" height="973" loading="lazy" alt="SwarmStore station page: fleet panel with manual controls, live 3D model of the grid and racks, camera feeds with label input, and round-trip time.">
+            <figcaption>Station page: fleet controls, live 3D cell, cameras and label input.</figcaption>
+          </figure>
+          <figure class="tall crop">
+            <img src="assets/img/swarm-cell.webp" width="1050" height="1400" loading="lazy" alt="The complete cell in the lab: taped grid with racks marked, AGV1 on the grid, the arm and the station Pi.">
+            <figcaption>The whole cell in the lab.</figcaption>
+          </figure>
+          <figure class="wide fit dark">
+            <img src="assets/img/swarm-agv.webp" width="1443" height="783" loading="lazy" alt="AGV top view with labels: three IR line sensors, ESP32-S3 controller, L298N motor driver, four TT gear motors, 2S 18650 battery and an RFID node tag.">
+            <figcaption>AGV, labelled: ESP32-S3, L298N, IR line sensors, 2S 18650, RFID tag.</figcaption>
+          </figure>
+          <figure class="fit light">
+            <img src="assets/img/swarm-floorplan.webp" width="1518" height="1057" loading="lazy" alt="Floor plan: RFID nodes 0 to 17 on a 125 mm grid over two boards, with racks, parking spots and the dock beside the arm.">
+            <figcaption>Floor plan: nodes 0–17, racks, parking and dock.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/img/swarm-cam-grip.webp" width="900" height="437" loading="lazy" alt="Close-up camera view of the gripper holding a red parcel with a printed shipment barcode label.">
+            <figcaption>Live camera on the station page: gripper holding a labelled parcel.</figcaption>
+          </figure>
+          <figure class="wide">
+            <img src="assets/img/swarm-cam-out.webp" width="900" height="444" loading="lazy" alt="Live outbound camera view: the white robotic arm beside the taped grid, with a parcel at the pick point.">
+            <figcaption>Outbound camera, live during the demo on 12 Nov 2026.</figcaption>
+          </figure>
+          <figure class="full">
+            <img src="assets/img/swarm-cnn.webp" width="1800" height="511" loading="lazy" alt="A grid of 50 camera samples of the arm in different poses, used to train the arm-pose CNN.">
+            <figcaption>50 camera samples of the arm, each labelled with the joint angles it reported: training data for the pose CNN.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ===== Quadruped ===== -->
+      <article class="project" id="cerepal" aria-labelledby="quad-title">
+        <div class="project-head">
+          <div class="eyebrow"><span>Sep – Dec 2026 · in progress</span><span class="tag">Legged robotics · CAN · Test rig</span></div>
+          <h3 id="quad-title">Low-cost quadruped leg</h3>
+          <p class="role-line">MotionLab.Berlin Tech Talent Program × Cerepal</p>
+          <p class="summary">Selected for Batch 9 of MotionLab.Berlin's 12-week Tech Talent Program and matched with Cerepal to build a low-cost, repairable quadruped robot platform. We started with one leg on a test rig, so the design can be proven before building four.</p>
+        </div>
+        <div class="project-body">
+          <div class="writeup">
+            <div>
+              <h4>The single-leg rig</h4>
+              <ul>
+                <li>The leg's hip is mounted on a carriage running on a <strong>vertical linear rail</strong>, so the leg can carry its own weight and move up and down freely, the way it would under a body.</li>
+                <li>A motor at the hip drives the thigh directly; the knee is driven through a <strong>toothed belt</strong> running inside the 3D-printed thigh, which keeps the motor mass up at the hip and the lower leg light.</li>
+                <li>Motors are commanded over <strong>CAN</strong> through a USB-CAN adapter.</li>
+                <li>The stand itself was built in the workshop from a plywood base, an upright board and the rail.</li>
+              </ul>
+            </div>
+            <div class="note"><strong>In progress.</strong> Final delivery to Cerepal is due in December 2026.</div>
+          </div>
+          <div class="side">
+            <dl class="spec">
+              <div><dt>Program</dt><dd>MotionLab.Berlin Tech Talent Program, Batch 9</dd></div>
+              <div><dt>Partner</dt><dd>Cerepal</dd></div>
+              <div><dt>Goal</dt><dd>Low-cost, repairable quadruped platform</dd></div>
+              <div><dt>Rig</dt><dd>Single leg on a vertical linear rail</dd></div>
+              <div><dt>Drive</dt><dd>Hip motor, belt-driven knee</dd></div>
+              <div><dt>Bus</dt><dd>CAN via USB-CAN adapter</dd></div>
+            </dl>
+            <div class="gallery" style="--cols:1">
+              <figure>
+                <video style="max-width:300px;margin-inline:auto" src="assets/img/quad-build.mp4" poster="assets/img/quad-build-poster.webp" width="540" height="960" autoplay muted loop playsinline controls preload="metadata" aria-label="Time-lapse of the team building the test stand at a workshop bench."></video>
+                <figcaption>Time-lapse: building the test stand in the workshop.</figcaption>
+              </figure>
+              <figure>
+                <video src="assets/img/quad-setup.mp4" poster="assets/img/quad-setup-poster.webp" width="960" height="720" autoplay muted loop playsinline controls preload="metadata" aria-label="Time-lapse of the leg being mounted on the rig, wired up and soldered at the bench."></video>
+                <figcaption>Time-lapse: mounting the leg on the rig, wiring and soldering the test set-up.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="gallery" style="--cols:4;--h:400px">
+          <figure class="crop tall">
+            <img src="assets/img/quad-leg-front.webp" width="787" height="1400" loading="lazy" alt="The 3D-printed leg hanging straight down from the hip carriage on the test stand.">
+            <figcaption>Leg extended on the rig.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/quad-leg-side.webp" width="787" height="1400" loading="lazy" alt="The leg on the test stand with the hip low on the rail and the knee bent, foot on the base board.">
+            <figcaption>Crouched: hip carriage low on the rail.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/quad-leg-belt.webp" width="787" height="1400" loading="lazy" alt="Close-up of the leg with the thigh cover removed, showing the toothed belt from the hip pulley to the knee pulley, and a USB-CAN adapter wired to the motor.">
+            <figcaption>Cover off: belt drive to the knee, USB-CAN adapter.</figcaption>
+          </figure>
+          <figure class="crop tall">
+            <img src="assets/img/quad-rig.webp" width="1050" height="1400" loading="lazy" alt="The empty test stand: white upright board with a vertical linear rail and carriage on a plywood base.">
+            <figcaption>The stand before the leg was mounted.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ===== More ===== -->
+      <div class="section-head" id="more" style="margin-top:2.5rem;margin-bottom:1.25rem;scroll-margin-top:1rem">
+        <span class="label">More projects</span>
+      </div>
+      <div class="minor">
+        <article id="urban-rover">
+          <div class="eyebrow"><span>2026</span><span class="tag">Software lead</span></div>
+          <h3>Urban Rover</h3>
+          <p>Software lead on an autonomous last-mile delivery robot. I co-built the investor pitch with the team, covering logistics modelling, financial projections and a hub-and-spoke depot network.</p>
+          <ul class="chips"><li>Autonomy</li><li>System architecture</li><li>Logistics</li></ul>
+        </article>
+        <article id="mri">
+          <div class="eyebrow"><span>2026</span><span class="tag">Machine learning</span></div>
+          <h3>Brain-tumour MRI classifier</h3>
+          <p>A four-block convolutional network that classifies brain MRI scans from 128×128×3 inputs, with a training pipeline, evaluation and a full LaTeX technical report.</p>
+          <ul class="chips"><li>Python</li><li>CNN</li><li>LaTeX</li></ul>
+        </article>
+        <article>
+          <div class="eyebrow"><span>Hardware</span><span class="tag">Power</span></div>
+          <h3>Solar charging systems</h3>
+          <p>Off-grid solar charging built from 3S2P LiPo packs and MPPT charge controllers, with panel wiring configured to power field electronics.</p>
+          <ul class="chips"><li>LiPo</li><li>MPPT</li><li>Power electronics</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" aria-labelledby="exp-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Experience</span>
+        <h2 id="exp-title">Industry, lab and team work</h2>
+      </div>
+      <div class="jobs">
+        <div class="job">
+          <div class="when"><span>Oct 2024 – present</span><span>Berlin · on-site · part-time</span></div>
+          <div>
+            <h3>SRH Berlin University of Applied Sciences</h3>
+            <p class="sub">Laboratory Teaching Assistant (Werkstudent), Mechatronics</p>
+            <ul>
+              <li>Lab work in the mechatronics labs: electronics, electrical troubleshooting and sensor set-ups, supporting students during lab sessions.</li>
+              <li>Organisational support for the mechatronics department.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="job">
+          <div class="when"><span>Sep – Dec 2026</span><span>Berlin</span></div>
+          <div>
+            <h3>MotionLab.Berlin × Cerepal</h3>
+            <p class="sub">Tech Talent Program, Batch 9</p>
+            <ul><li>A 12-week industry challenge to develop a low-cost, repairable quadruped robot platform, with weekly coaching and on-site work with Cerepal.</li></ul>
+          </div>
+        </div>
+        <div class="job">
+          <div class="when"><span>Aug 2025 – Mar 2026</span><span>SRH Berlin</span></div>
+          <div>
+            <h3>Extra Terrestrial Engineers</h3>
+            <p class="sub">Core member, rover electronics</p>
+            <ul>
+              <li>Designed the six-motor carrier PCB and the arm-driver PCB for GHOST, the team's six-wheeled planetary rover, and led sensor integration.</li>
+              <li>Qualified for the Australian Rover Challenge 2026; co-wrote the ERC 2026 PDR and presented the rover at the Berliner Robotiknetzwerktreffen in July 2026.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="job">
+          <div class="when"><span>Aug 2024 – Jun 2026</span><span>SRH Berlin</span></div>
+          <div>
+            <h3>Team Skybound (CanSat)</h3>
+            <p class="sub">Software developer, two seasons</p>
+            <ul>
+              <li>Paraglider GNC, XBee telemetry link and the portable ground station; 14th worldwide out of 100+ teams at CanSat 2026.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" aria-labelledby="skills-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Toolkit</span>
+        <h2 id="skills-title">Tools I use on these projects</h2>
+      </div>
+      <div class="skills">
+        <div><h3>Embedded &amp; electronics</h3><ul class="chips"><li>Raspberry Pi</li><li>ESP32</li><li>Teensy 4.1</li><li>Arduino</li><li>PCB design</li><li>Fusion Electronics</li><li>KiCad</li><li>Motor drivers</li><li>Power electronics</li><li>Electrical troubleshooting</li><li>Rapid prototyping</li></ul></div>
+        <div><h3>RF &amp; communications</h3><ul class="chips"><li>XBee XR900</li><li>ESP-NOW</li><li>MQTT / Mosquitto</li><li>RFID (RC522)</li><li>CAN bus</li><li>I²C</li><li>RF engineering</li><li>Sensor networks</li><li>Telemetry</li><li>Ground stations</li></ul></div>
+        <div><h3>Software &amp; ML</h3><ul class="chips"><li>Python</li><li>C++ (Arduino / ESP32)</li><li>Test automation</li><li>Backend development</li><li>Flask</li><li>OpenCV</li><li>CNNs / ONNX</li><li>YOLOv8</li><li>Git</li><li>LaTeX</li></ul></div>
+        <div><h3>Sensors integrated</h3><ul class="chips"><li>BNO055</li><li>NEO-M9N GPS</li><li>BMP581</li><li>INA219</li><li>INA260</li></ul></div>
+        <div><h3>Mechanical &amp; simulation</h3><ul class="chips"><li>SolidWorks</li><li>Fusion 360</li><li>Ansys Workbench (FEA)</li><li>DFM</li><li>Bambu Lab 3D printing</li></ul></div>
+        <div><h3>Control &amp; robotics</h3><ul class="chips"><li>LQR</li><li>Kalman filter</li><li>D* Lite path planning</li><li>Inverse kinematics</li><li>GNC</li><li>FSM / Petri nets</li><li>Siemens TIA Portal / STEP 7</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education" aria-labelledby="edu-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="label">Education</span>
+        <h2 id="edu-title">Degree and languages</h2>
+      </div>
+      <div class="edu">
+        <div>
+          <h3>B.Eng. Mechatronics, Robotics &amp; Automation Engineering, SRH Berlin University of Applied Sciences</h3>
+          <p>Apr 2024 – Sep 2027 (expected) · Berlin School of Technology · 6th semester</p>
+          <p style="margin-top:.4rem">Thesis direction: planetary rovers and entry, descent &amp; landing.</p>
+          <h3 style="margin-top:1.5rem">B.E. Mechatronics, Robotics &amp; Automation Engineering, Hindustan University, Chennai</h3>
+          <p>Sep 2022 – Apr 2024 · CGPA 8.34 · transferred to SRH Berlin</p>
+          <p style="margin-top:.4rem">Design projects: an obstacle-avoidance robot and a security surveillance mobile robot.</p>
+        </div>
+        <div>
+          <h3>Languages</h3>
+          <div class="langs">
+            <div class="lang"><span>Tamil</span><span class="bar"><i style="width:100%"></i></span><span class="lv">native</span></div>
+            <div class="lang"><span>English</span><span class="bar"><i style="width:92%"></i></span><span class="lv">fluent</span></div>
+            <div class="lang"><span>German</span><span class="bar"><i style="width:50%"></i></span><span class="lv">B1</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <span class="label" style="color:var(--hero-muted)">Contact</span>
+      <h2 id="contact-title">Let's build something that <em>moves</em>.</h2>
+      <p>I'm open to Werkstudent roles, internships and robotics projects in Berlin. Email is the fastest way to reach me.</p>
+      <dl class="contact-rows">
+        <div><dt>Email</dt><dd id="email">prithivramvasanvetriselvan@gmail.com</dd><button class="copy" id="copy-email" type="button">Copy</button></div>
+        <div><dt>GitHub</dt><dd><a href="https://github.com/Prithiv-vetri08" target="_blank" rel="noopener">github.com/Prithiv-vetri08</a></dd><span></span></div>
+        <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/prithiv-ramvasan-vetri-selvan-70a47b244" target="_blank" rel="noopener">linkedin.com/in/prithiv-ramvasan-vetri-selvan-70a47b244</a></dd><span></span></div>
+      </dl>
+      <div class="footer-line"><span>Prithiv Ramvasan Vetri Selvan · Berlin</span><span>© 2026</span></div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email'), addr = document.getElementById('email');
+  if (btn && addr) btn.addEventListener('click', function () {
+    function sel() { var r = document.createRange(); r.selectNodeContents(addr); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected'; }
+    try { navigator.clipboard.writeText(addr.textContent.trim()).then(function () { btn.textContent = 'Copied'; }, sel); } catch (e) { sel(); }
+    setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+  });
+
+  var root = document.documentElement, slice = Array.prototype.slice;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, hasIO = 'IntersectionObserver' in window;
+
+  /* reveal */
+  var SEL = '.hero-text > *, .hero-figure, .section-head, .index-scroll, .project-head, .writeup > *, .side > *, .minor > article, .job, .skills > div, .edu > div, .contact .wrap > *, .gallery > figure';
+  if (root.classList.contains('js') && hasIO) {
+    var els = slice.call(document.querySelectorAll(SEL));
+    els.forEach(function (el) {
+      var sibs = slice.call(el.parentNode.children).filter(function (c) { return els.indexOf(c) !== -1; });
+      el.style.setProperty('--d', Math.min(sibs.indexOf(el) * 90, 450) + 'ms');
+    });
+    slice.call(document.querySelectorAll('.spec')).forEach(function (dl) { slice.call(dl.children).forEach(function (r, i) { r.style.setProperty('--i', i); }); });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: .06 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  /* progress + rail */
+  var bar = document.querySelector('.progress span'), rail = document.querySelector('.rail'), hero = document.querySelector('.hero'), tick = false;
+  function upd() {
+    tick = false;
+    var y = window.pageYOffset || root.scrollTop, max = root.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+    rail.classList.toggle('show', y > hero.offsetHeight * .6);
+  }
+  window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(upd); } }, { passive: true });
+  upd();
+  if (hasIO) {
+    var links = slice.call(rail.querySelectorAll('a')), map = {};
+    links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (!e.isIntersecting) return; links.forEach(function (l) { l.classList.remove('on'); }); if (map[e.target.id]) map[e.target.id].classList.add('on'); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(map).forEach(function (id) { var t = document.getElementById(id); if (t) so.observe(t); });
+  }
+
+
+  /* hero photo stack */
+  var stack=document.getElementById('stack');
+  if(stack){
+    var cards=[].slice.call(stack.querySelectorAll('.card')), order=cards.map(function(_,i){return i;}), busy=false, timer;
+    function lay(){ order.forEach(function(ci,pos){ cards[ci].setAttribute('data-pos',pos); }); }
+    function next(){
+      if(busy) return; busy=true;
+      var top=cards[order[0]]; top.classList.add('leaving');
+      setTimeout(function(){ order.push(order.shift()); top.classList.remove('leaving'); lay(); busy=false; },520);
+    }
+    lay();
+    stack.addEventListener('click',function(){ next(); clearInterval(timer); timer=setInterval(next,4200); });
+    if(!reduce) timer=setInterval(next,4200);
+  }
+
+  /* lightbox */
+  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
+  if (lb && typeof lb.showModal === 'function') {
+    slice.call(document.querySelectorAll('.gallery img')).forEach(function (img) {
+      img.tabIndex = 0; img.setAttribute('role', 'button'); img.classList.add('zoomable');
+      function open() { lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt; var c = img.closest('figure').querySelector('figcaption'); lbCap.textContent = c ? c.textContent : img.alt; lb.showModal(); }
+      img.addEventListener('click', open);
+      img.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+    });
+    lb.addEventListener('click', function () { lb.close(); });
+  }
+
+  /* hero sky: twinkling stars + occasional telemetry packets arcing across */
+  var cv = document.getElementById('sky');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d'), W, H, stars = [], packets = [], running = false, raf = 0, last = 0;
+  function build() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    stars = []; var n = Math.round(W * H / 3200);
+    for (var i = 0; i < n; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .2, p: Math.random() * 6.28, s: Math.random() * 1.5 + .4 });
+  }
+  function spawn() {
+    var y0 = H * (.15 + Math.random() * .6);
+    packets.push({ x0: -20, y0: y0, x1: W + 20, y1: y0 + (Math.random() - .5) * H * .4, c: H * (Math.random() * .3 - .15), t: 0, v: .00012 + Math.random() * .0001 });
+  }
+  function frame(now) {
+    var dt = last ? now - last : 16; last = now;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i], a = reduce ? .6 : .35 + .35 * Math.sin(now / 1000 * s.s + s.p);
+      ctx.fillStyle = 'rgba(236,230,222,' + a.toFixed(3) + ')';
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
+    }
+    if (reduce) return;
+    if (Math.random() < .006 && packets.length < 3) spawn();
+    for (var k = packets.length - 1; k >= 0; k--) {
+      var p = packets[k]; p.t += p.v * dt;
+      if (p.t > 1) { packets.splice(k, 1); continue; }
+      for (var j = 0; j < 14; j++) {
+        var t = p.t - j * .006; if (t < 0) break;
+        var mx = (p.x0 + p.x1) / 2, my = (p.y0 + p.y1) / 2 + p.c;
+        var x = (1 - t) * (1 - t) * p.x0 + 2 * (1 - t) * t * mx + t * t * p.x1;
+        var y = (1 - t) * (1 - t) * p.y0 + 2 * (1 - t) * t * my + t * t * p.y1;
+        ctx.fillStyle = 'rgba(255,138,92,' + (0.8 * (1 - j / 14)).toFixed(3) + ')';
+        ctx.beginPath(); ctx.arc(x, y, 1.8 - j * .1, 0, 6.283); ctx.fill();
+      }
+    }
+  }
+  function loop(n) { frame(n); if (running) raf = requestAnimationFrame(loop); }
+  function start() { if (running || reduce) return; running = true; last = 0; raf = requestAnimationFrame(loop); }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+  build(); if (reduce) frame(0); else start();
+  if (hasIO) new IntersectionObserver(function (es) { es.forEach(function (e) { e.isIntersecting ? start() : stop(); }); }).observe(hero);
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); if (reduce) frame(0); }, 200); });
+})();
+</script>
+<dialog class="lightbox" id="lightbox" aria-label="Enlarged image">
+  <button class="lb-close" type="button">Close ✕</button>
+  <img id="lb-img" alt="">
+  <p id="lb-cap"></p>
+</dialog>
+</body>
+</html>
