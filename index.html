@@ -68,20 +68,26 @@ p{margin:0}
 .btn.primary:hover{background:#ffa47f}
 .hero-figure{margin:0;display:grid;gap:1rem;justify-items:center;min-width:0}
 
-.stack{position:relative;width:100%;max-width:520px;aspect-ratio:4/3.3;cursor:pointer;margin-top:1rem}
-.stack .card{position:absolute;left:8%;top:6%;width:84%;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:#141a26;border:1px solid #2c3446;box-shadow:0 24px 50px -18px rgba(0,0,0,.75);transition:transform .8s cubic-bezier(.2,.7,.2,1),opacity .8s,filter .8s;will-change:transform}
-.stack .card .fill{position:absolute;inset:-20px;background-size:cover;background-position:center;filter:blur(18px) brightness(.55);transform:scale(1.1)}
-.stack .card img{position:relative;width:100%;height:100%;object-fit:contain;display:block}
-.stack .card span{z-index:1;position:absolute;left:0;right:0;bottom:0;padding:22px 14px 10px;font-family:var(--font-mono);font-size:.75rem;color:#ece6de;background:linear-gradient(transparent,rgba(10,14,22,.85))}
-.stack .card[data-pos="0"]{transform:translate(0,0) rotate(-2deg);z-index:6}
-.stack .card[data-pos="1"]{transform:translate(9%,-7%) rotate(5deg) scale(.95);z-index:5;filter:brightness(.7)}
-.stack .card[data-pos="2"]{transform:translate(-10%,-9%) rotate(-9deg) scale(.9);z-index:4;filter:brightness(.55)}
-.stack .card[data-pos="3"]{transform:translate(14%,4%) rotate(11deg) scale(.86);z-index:3;filter:brightness(.45)}
-.stack .card[data-pos="4"]{transform:translate(-14%,6%) rotate(-14deg) scale(.82);z-index:2;filter:brightness(.38)}
-.stack .card[data-pos="5"]{transform:translate(0,10%) rotate(3deg) scale(.78);z-index:1;filter:brightness(.3)}
-.stack .card.leaving{transform:translate(-70%,25%) rotate(-24deg) scale(.9)!important;opacity:0}
-.stack:hover .card[data-pos="0"]{transform:translate(0,-2%) rotate(0deg) scale(1.02)}
-@media (prefers-reduced-motion:reduce){.stack .card{transition:none}}
+
+
+.orbit{position:relative;width:100%;max-width:560px;aspect-ratio:1/0.82;margin-top:.5rem;perspective:900px}
+.orbit .planet{position:absolute;left:50%;top:50%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;z-index:50;
+  background:radial-gradient(circle at 32% 30%,#ffb38a 0%,#e8673a 28%,#a83a1c 58%,#4a160a 85%,#2a0c05 100%);
+  box-shadow:0 0 60px 8px rgba(255,120,70,.28),inset -18px -22px 40px rgba(0,0,0,.55);overflow:hidden}
+.orbit .planet i{position:absolute;inset:0;border-radius:50%;opacity:.35;
+  background:radial-gradient(circle at 70% 60%,rgba(60,15,5,.9) 0 6%,transparent 7%),radial-gradient(circle at 40% 72%,rgba(60,15,5,.8) 0 4%,transparent 5%),radial-gradient(circle at 58% 28%,rgba(60,15,5,.7) 0 3%,transparent 4%),repeating-linear-gradient(170deg,transparent 0 14px,rgba(255,200,160,.12) 14px 18px);
+  animation:spin 40s linear infinite}
+@keyframes spin{to{background-position:200px 0,160px 0,120px 0,400px 0}}
+.orbit .ring{position:absolute;left:50%;top:50%;border:1px solid rgba(255,138,92,.22);border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg);pointer-events:none}
+.orbit .r1{width:96%;aspect-ratio:1}
+.orbit .r2{width:70%;aspect-ratio:1;border-style:dashed;border-color:rgba(154,159,174,.18)}
+.orbit .sat{position:absolute;left:0;top:0;width:24%;aspect-ratio:1;border-radius:14px;overflow:visible;text-decoration:none;will-change:transform;transition:filter .3s}
+.orbit .sat img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,50% 50%);border-radius:14px;display:block;border:1px solid rgba(255,255,255,.18);box-shadow:0 14px 30px -10px rgba(0,0,0,.8)}
+.orbit .sat span{position:absolute;left:50%;top:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;font-family:var(--font-mono);font-size:.7rem;color:var(--hero-ink);background:rgba(10,14,22,.85);border:1px solid var(--hero-line);padding:2px 8px;border-radius:999px;opacity:0;transition:opacity .25s}
+.orbit .sat:hover span,.orbit .sat:focus-visible span{opacity:1}
+.orbit .sat:hover img{border-color:var(--flare)}
+@media (max-width:900px){.orbit{max-width:440px;margin-inline:auto}}
+@media (prefers-reduced-motion:reduce){.orbit .planet i{animation:none}}
 
 .hero-photo{position:relative;width:100%;max-width:560px;animation:float 7s ease-in-out infinite}
 .hero-photo::before{content:"";position:absolute;inset:8% 6%;z-index:-1;background:radial-gradient(closest-side,rgba(255,138,92,.35),transparent);filter:blur(40px)}
@@ -313,15 +319,17 @@ html.js .gallery>figure.in img{clip-path:inset(0)}
     </div>
 
     <figure class="hero-figure">
-      <div class="stack" id="stack" role="img" aria-label="A stack of project photos: the GHOST rover, the CanSat launch pad, the six-motor carrier PCB, the SwarmStore cell, the quadruped leg and the CanSat ground station.">
-        <div class="card" data-i="0"><i class="fill" style="background-image:url(assets/img/rover-side.webp)"></i><img src="assets/img/rover-side.webp" alt="" fetchpriority="high"><span>GHOST rover · ERC 2026</span></div>
-        <div class="card" data-i="1"><i class="fill" style="background-image:url(assets/img/cansat-launchpad.webp)"></i><img src="assets/img/cansat-launchpad.webp" alt="" ><span>CanSat 2026 · Virginia</span></div>
-        <div class="card" data-i="2"><i class="fill" style="background-image:url(assets/img/rover-pcb-top.webp)"></i><img src="assets/img/rover-pcb-top.webp" alt="" ><span>6-motor carrier PCB</span></div>
-        <div class="card" data-i="3"><i class="fill" style="background-image:url(assets/img/swarm-3d.webp)"></i><img src="assets/img/swarm-3d.webp" alt="" ><span>SwarmStore · live 3D view: 2 AGVs + arm</span></div>
-        <div class="card" data-i="4"><i class="fill" style="background-image:url(assets/img/quad-leg-belt.webp)"></i><img src="assets/img/quad-leg-belt.webp" alt="" ><span>Quadruped leg · Cerepal</span></div>
-        <div class="card" data-i="5"><i class="fill" style="background-image:url(assets/img/cansat-gs-live.webp)"></i><img src="assets/img/cansat-gs-live.webp" alt="" ><span>CanSat ground station</span></div>
+      <div class="orbit" id="orbit" aria-label="Animated orbit of project photos around a planet: GHOST rover, CanSat 2026, six-motor carrier PCB, SwarmStore, quadruped leg and CanSat ground station.">
+        <div class="ring r1"></div><div class="ring r2"></div>
+        <div class="planet"><i></i></div>
+        <a class="sat" href="#rover-pcb" style="--pos:50% 60%"><img src="assets/img/rover-side.webp" alt="GHOST rover"><span>GHOST rover</span></a>
+        <a class="sat" href="#cansat" style="--pos:50% 45%"><img src="assets/img/cansat-launchpad.webp" alt="CanSat 2026"><span>CanSat 2026</span></a>
+        <a class="sat" href="#rover-pcb" style="--pos:40% 30%"><img src="assets/img/rover-pcb-top.webp" alt="6-motor carrier PCB"><span>6-motor carrier PCB</span></a>
+        <a class="sat" href="#swarmstore" style="--pos:50% 50%"><img src="assets/img/swarm-3d.webp" alt="SwarmStore"><span>SwarmStore</span></a>
+        <a class="sat" href="#cerepal" style="--pos:55% 55%"><img src="assets/img/quad-leg-belt.webp" alt="Quadruped leg"><span>Quadruped leg</span></a>
+        <a class="sat" href="#cansat" style="--pos:50% 30%"><img src="assets/img/cansat-gs-live.webp" alt="CanSat ground station"><span>CanSat ground station</span></a>
       </div>
-      <figcaption><span>Click the stack to shuffle</span></figcaption>
+      <figcaption><span>Hover to pause · click a photo to jump to the project</span></figcaption>
     </figure>
   </div>
   <a class="scroll-cue" href="#work"><span>Scroll</span><i aria-hidden="true"></i></a>
@@ -898,19 +906,26 @@ html.js .gallery>figure.in img{clip-path:inset(0)}
   }
 
 
-  /* hero photo stack */
-  var stack=document.getElementById('stack');
-  if(stack){
-    var cards=[].slice.call(stack.querySelectorAll('.card')), order=cards.map(function(_,i){return i;}), busy=false, timer;
-    function lay(){ order.forEach(function(ci,pos){ cards[ci].setAttribute('data-pos',pos); }); }
-    function next(){
-      if(busy) return; busy=true;
-      var top=cards[order[0]]; top.classList.add('leaving');
-      setTimeout(function(){ order.push(order.shift()); top.classList.remove('leaving'); lay(); busy=false; },520);
+  /* hero orbit */
+  var orbit=document.getElementById('orbit');
+  if(orbit){
+    var sats=[].slice.call(orbit.querySelectorAll('.sat')), N=sats.length, t=0, last=0, paused=false;
+    function place(){
+      var W=orbit.clientWidth, H=orbit.clientHeight, cx=W/2, cy=H/2, rx=W*0.38, ry=H*0.26, tilt=-0.18;
+      sats.forEach(function(el,i){
+        var a=t+i*(Math.PI*2/N), c=Math.cos(a), sn=Math.sin(a);
+        var x=cx+rx*c, y=cy+ry*sn + c*rx*tilt;
+        var depth=(sn+1)/2, sc=0.62+0.48*depth, w=el.offsetWidth;
+        el.style.transform='translate('+(x-w/2)+'px,'+(y-w/2)+'px) scale('+sc.toFixed(3)+')';
+        el.style.zIndex= sn>0 ? 60+Math.round(depth*10) : 10+Math.round(depth*10);
+        el.style.filter='brightness('+(0.45+0.55*depth).toFixed(2)+')';
+      });
     }
-    lay();
-    stack.addEventListener('click',function(){ next(); clearInterval(timer); timer=setInterval(next,4200); });
-    if(!reduce) timer=setInterval(next,4200);
+    function loop(now){ var dt=last?Math.min(now-last,50):16; last=now; if(!paused) t+=dt*0.00022; place(); requestAnimationFrame(loop); }
+    orbit.addEventListener('mouseenter',function(){paused=true;});
+    orbit.addEventListener('mouseleave',function(){paused=false;});
+    window.addEventListener('resize',place);
+    if(reduce){ place(); } else { requestAnimationFrame(loop); }
   }
 
   /* lightbox */
